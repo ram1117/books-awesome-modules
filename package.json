@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ram1117/books-awesome-modules/issues"
   },
-  "homepage": "https://github.com/ram1117/books-awesome-modules#readme"
+  "homepage": "https://github.com/ram1117/books-awesome-modules#readme",
+  "dependencies": {
+    "luxon": "^3.2.1"
+  }
 }
