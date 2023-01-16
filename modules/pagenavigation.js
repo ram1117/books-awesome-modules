@@ -14,7 +14,6 @@ export default class PageNavigation {
   }
 
   displayBooks() {
-    // loadBooksList();
     this.displayBk.style.display = 'block';
     this.addBk.style.display = 'none';
     this.contact.style.display = 'none';
