@@ -11,11 +11,14 @@ export default class BooksInterface {
   constructor() {
     this.displaySection = document.querySelector('.display-book-container');
     if (this.displaySection) {
-      this.displaySection.onclick = (event) => this.removeBook(event.target);
+      this.displaySection.onclick = (event: Event) =>
+        this.removeBook(event.target as HTMLElement);
     }
 
-    this.bookForm = document.getElementById('form-book-submit') as HTMLFormElement;
-    this.bTitle = document.getElementById('book-title') as HTMLInputElement; 
+    this.bookForm = document.getElementById(
+      'form-book-submit'
+    ) as HTMLFormElement;
+    this.bTitle = document.getElementById('book-title') as HTMLInputElement;
     this.bAuthor = document.getElementById('book-author') as HTMLInputElement;
     if (this.bookForm) {
       this.bookForm.onsubmit = (event) => this.addBook(event);
@@ -25,9 +28,9 @@ export default class BooksInterface {
 
   addBook(event: Event) {
     event.preventDefault();
-    const arr = Storage.getBooksArray();
+    const arr: Book[] = Storage.getBooksArray();
     if (this.bTitle && this.bAuthor) {
-      const bk = new Book(
+      const bk: Book = new Book(
         Math.floor(Math.random() * 100000),
         this.bTitle.value,
         this.bAuthor.value
@@ -50,7 +53,7 @@ export default class BooksInterface {
     }
   }
 
-  removeBook(target) {
+  removeBook(target: HTMLElement) {
     if (target.tagName === 'BUTTON') {
       const divId = target.id.substring(target.id.indexOf('-') + 1);
       const divElement: HTMLElement | null = document.getElementById(divId);
@@ -58,8 +61,8 @@ export default class BooksInterface {
         divElement.parentNode.removeChild(divElement);
       }
 
-      const arr = Storage.getBooksArray();
-      arr.forEach((item) => {
+      const arr: Book[] = Storage.getBooksArray();
+      arr.forEach((item: Book) => {
         if (item.id === parseInt(divId, 10)) {
           arr.splice(arr.indexOf(item), 1);
         }
@@ -75,11 +78,11 @@ export default class BooksInterface {
         this.displaySection.removeChild(this.displaySection.firstChild);
       }
     }
-    let i = 1;
-    Storage.getBooksArray().forEach((book) => {
+    let i: number = 1;
+    Storage.getBooksArray().forEach((book: Book) => {
       const bookDiv = document.createElement('div');
       bookDiv.classList.add('book-card');
-      bookDiv.id = book.id;
+      bookDiv.id = `${book.id}`;
       if (i % 2 === 0) {
         bookDiv.classList.add('book-card-grey');
       }
@@ -89,7 +92,7 @@ export default class BooksInterface {
         <h4>by ${book.author}</h3>
         </div>
       `;
-      const removeButton = document.createElement('button');
+      const removeButton: HTMLButtonElement = document.createElement('button');
       removeButton.classList.add('button-remove');
       removeButton.textContent = 'Remove';
       removeButton.id = `button-${book.id}`;
