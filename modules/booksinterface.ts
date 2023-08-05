@@ -3,7 +3,7 @@ import Storage from './storage.js';
 
 export default class BooksInterface {
   displaySection: HTMLDivElement | null;
-  bookForm: HTMLElement | null;
+  bookForm: HTMLFormElement | null;
   bTitle: HTMLInputElement | null;
   bAuthor: HTMLInputElement | null;
   alertDiv: HTMLDivElement | null;
@@ -14,19 +14,19 @@ export default class BooksInterface {
       this.displaySection.onclick = (event) => this.removeBook(event.target);
     }
 
-    this.bookForm = document.getElementById('form-book-submit');
-    this.bTitle = document.getElementById('book-title');
-    this.bAuthor = document.getElementById('book-author');
+    this.bookForm = document.getElementById('form-book-submit') as HTMLFormElement;
+    this.bTitle = document.getElementById('book-title') as HTMLInputElement; 
+    this.bAuthor = document.getElementById('book-author') as HTMLInputElement;
     if (this.bookForm) {
       this.bookForm.onsubmit = (event) => this.addBook(event);
     }
     this.alertDiv = document.querySelector('.fade-add-message');
   }
 
-  addBook(event) {
+  addBook(event: Event) {
     event.preventDefault();
     const arr = Storage.getBooksArray();
-    if(this.bTitle && this.bAuthor){
+    if (this.bTitle && this.bAuthor) {
       const bk = new Book(
         Math.floor(Math.random() * 100000),
         this.bTitle.value,
@@ -34,22 +34,30 @@ export default class BooksInterface {
       );
       arr.push(bk);
     }
-  
-    Storage.setBooksArray(arr);
-    this.bookForm.reset();
-    this.loadBooksList();
 
-    this.alertDiv.classList.toggle('fade-add-message-show');
-    window.setTimeout(() => {
+    Storage.setBooksArray(arr);
+    if (this.bookForm) {
+      this.bookForm.reset();
+    }
+    this.loadBooksList();
+    if (this.alertDiv) {
       this.alertDiv.classList.toggle('fade-add-message-show');
-    }, 1000);
+      window.setTimeout(() => {
+        if (this.alertDiv) {
+          this.alertDiv.classList.toggle('fade-add-message-show');
+        }
+      }, 1000);
+    }
   }
 
   removeBook(target) {
     if (target.tagName === 'BUTTON') {
       const divId = target.id.substring(target.id.indexOf('-') + 1);
-      const divElement = document.getElementById(divId);
-      divElement.parentNode.removeChild(divElement);
+      const divElement: HTMLElement | null = document.getElementById(divId);
+      if (divElement && divElement.parentNode) {
+        divElement.parentNode.removeChild(divElement);
+      }
+
       const arr = Storage.getBooksArray();
       arr.forEach((item) => {
         if (item.id === parseInt(divId, 10)) {
@@ -62,8 +70,10 @@ export default class BooksInterface {
   }
 
   loadBooksList() {
-    while (this.displaySection.firstChild) {
-      this.displaySection.removeChild(this.displaySection.firstChild);
+    if (this.displaySection) {
+      while (this.displaySection.firstChild) {
+        this.displaySection.removeChild(this.displaySection.firstChild);
+      }
     }
     let i = 1;
     Storage.getBooksArray().forEach((book) => {
@@ -84,7 +94,9 @@ export default class BooksInterface {
       removeButton.textContent = 'Remove';
       removeButton.id = `button-${book.id}`;
       bookDiv.appendChild(removeButton);
-      this.displaySection.appendChild(bookDiv);
+      if (this.displaySection) {
+        this.displaySection.appendChild(bookDiv);
+      }
     });
   }
 }
