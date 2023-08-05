@@ -1,9 +1,15 @@
-export default class Storage {
-  static getBooksArray() {
+/* eslint-disable */
+// Object.defineProperty(exports, "__esModule", { value: true });
+const Storage = /** @class */ (function () {
+  function Storage() {
+  }
+  Storage.getBooksArray = function () {
     return JSON.parse(localStorage.getItem('book-list'));
-  }
-
-  static setBooksArray(array) {
+  };
+  Storage.setBooksArray = function (array) {
     localStorage.setItem('book-list', JSON.stringify(array));
-  }
-}
+  };
+  return Storage;
+}());
+const _default = Storage;
+export { _default as default };
