@@ -16,7 +16,10 @@ export default class PageNavigation {
       this.listbtn.onclick = () => this.displayBooks();
     }
     if ((this, this.addBookBtn)) {
-      this.addBookBtn.onclick = () => this.displayAddBooks();
+      this.addBookBtn.onclick = () => {
+        console.log("clicked");
+        this.displayAddBooks()
+      };
     }
     if (this.contactBtn) {
       this.contactBtn.onclick = () => this.displayContact();
